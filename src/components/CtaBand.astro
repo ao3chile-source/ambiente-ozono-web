@@ -1,0 +1,26 @@
+---
+import { contact, waLink } from '../data/site.js';
+const { title = '¿Qué proceso quieres mejorar con ozono?', text = 'Cuéntanos tu caso por WhatsApp. La primera asesoría no tiene costo y te respondemos con una alternativa concreta.' } = Astro.props;
+---
+<section class="cta-band">
+  <div class="wrap inner reveal">
+    <div>
+      <h2>{title}</h2>
+      <p>{text}</p>
+    </div>
+    <div class="side">
+      <a class="btn btn-primary" href={waLink()} target="_blank" rel="noopener">Escribir por WhatsApp</a>
+      <span class="mono">{contact.whatsappLabel} · {contact.email}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band{background:var(--sky-soft); padding-block:clamp(56px,8vw,96px); border-top:1px solid #CFE8F5;}
+  .inner{display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:32px; align-items:end;}
+  h2{font-size:clamp(28px,3.6vw,44px); color:var(--navy); margin-bottom:14px;}
+  p{color:var(--muted); font-size:17.5px; max-width:52ch;}
+  .side{display:grid; gap:12px; justify-items:start;}
+  .mono{font-size:13px; color:var(--muted); user-select:all; overflow-wrap:anywhere;}
+  @media (max-width:760px){ .inner{grid-template-columns:1fr;} }
+</style>

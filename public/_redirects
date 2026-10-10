@@ -1,0 +1,8 @@
+# URLs del sitio WordPress anterior hacia las páginas nuevas
+/ao3                     /somos-ao3              301
+/ao3/                    /somos-ao3              301
+/productos-servicios     /soluciones             301
+/productos-servicios/    /soluciones             301
+/soluciones-sustentables  /preguntas-frecuentes  301
+/soluciones-sustentables/ /preguntas-frecuentes  301
+/blog/                   /blog                   301

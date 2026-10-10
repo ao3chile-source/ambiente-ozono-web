@@ -1,0 +1,79 @@
+---
+import { industries } from '../data/site.js';
+---
+<div class="selector" data-selector>
+  <div class="tabs" role="tablist" aria-label="Procesos">
+    {industries.map((ind, i) => (
+      <button role="tab" id={`tab-${ind.id}`} aria-controls={`panel-${ind.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
+        <span class="mono idx">{String(i + 1).padStart(2, '0')}</span>{ind.short}
+      </button>
+    ))}
+  </div>
+  {industries.map((ind, i) => (
+    <article class="panel" role="tabpanel" id={`panel-${ind.id}`} aria-labelledby={`tab-${ind.id}`} hidden={i !== 0}>
+      <h3>{ind.name}</h3>
+      <div class="cols">
+        <div><span class="eyebrow">El problema</span><p>{ind.problem}</p></div>
+        <div><span class="eyebrow">Qué hace el ozono</span><p>{ind.action}</p></div>
+      </div>
+      <ul class="benefits">
+        {ind.benefits.map((b) => <li>{b}</li>)}
+      </ul>
+      <a class="more" href={`/soluciones#${ind.id}`}>Ver la solución para {ind.short.toLowerCase()} →</a>
+    </article>
+  ))}
+</div>
+
+<style>
+  .selector{display:grid; grid-template-columns:260px minmax(0,1fr); gap:clamp(24px,4vw,56px); align-items:start;}
+  .tabs{display:flex; flex-direction:column; border-left:1px solid var(--line);}
+  .tabs button{all:unset; cursor:pointer; display:flex; align-items:baseline; gap:14px; padding:14px 18px; font-family:var(--font-display); font-size:21px; font-weight:600; font-stretch:108%; color:var(--muted); border-left:3px solid transparent; margin-left:-2px; transition:color .2s, border-color .2s;}
+  .tabs button:hover{color:var(--ink);}
+  .tabs button[aria-selected="true"]{color:var(--brand); border-left-color:var(--brand);}
+  .tabs button:focus-visible{outline:2px solid var(--sky); outline-offset:2px;}
+  .idx{font-size:12px; color:var(--muted); font-weight:400;}
+  .panel[hidden]{display:none;}
+  .panel{background:var(--white); border:1px solid var(--line); border-radius:var(--radius); padding:clamp(24px,3.5vw,44px); display:grid; gap:24px; min-width:0;}
+  .panel h3{font-size:clamp(26px,3vw,36px);}
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  .cols > div{display:grid; gap:8px; align-content:start;}
+  .cols p{color:var(--muted); font-size:16.5px;}
+  .benefits{list-style:none; margin:0; padding:20px 0 0; border-top:1px solid var(--line); display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px;}
+  .benefits li{font-weight:600; font-size:15.5px; padding-left:22px; position:relative;}
+  .benefits li::before{content:""; position:absolute; left:0; top:.42em; width:11px; height:11px; border-radius:50%; border:2px solid var(--leaf);}
+  .more{font-weight:600; color:var(--brand); text-decoration:none; justify-self:start;}
+  .more:hover{text-decoration:underline; text-underline-offset:5px;}
+  @media (max-width:860px){
+    .selector{grid-template-columns:1fr;}
+    .tabs{flex-direction:row; overflow-x:auto; border-left:none; border-bottom:1px solid var(--line); scrollbar-width:none;}
+    .tabs button{border-left:none; border-bottom:3px solid transparent; margin:0 0 -2px; padding:12px 14px; font-size:17px; white-space:nowrap;}
+    .tabs button[aria-selected="true"]{border-bottom-color:var(--brand);}
+    .cols, .benefits{grid-template-columns:1fr;}
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-selector]').forEach((root) => {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const select = (tab: HTMLButtonElement) => {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        const panel = root.querySelector<HTMLElement>('#' + t.getAttribute('aria-controls'));
+        if (panel) panel.hidden = !on;
+      });
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t));
+      t.addEventListener('keydown', (e) => {
+        const k = (e as KeyboardEvent).key;
+        const next = k === 'ArrowDown' || k === 'ArrowRight' ? 1 : k === 'ArrowUp' || k === 'ArrowLeft' ? -1 : 0;
+        if (!next) return;
+        e.preventDefault();
+        const n = tabs[(i + next + tabs.length) % tabs.length];
+        select(n); n.focus();
+      });
+    });
+  });
+</script>

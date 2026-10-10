@@ -1,0 +1,114 @@
+---
+import { facts, waLink } from '../data/site.js';
+---
+<section class="hero">
+  <canvas id="ozoneField" aria-hidden="true"></canvas>
+  <div class="wrap inner">
+    <p class="eyebrow">Representantes oficiales de Sewec Ozon · Alemania</p>
+    <h1>Desinfección con ozono, diseñada para <em>tu proceso.</em></h1>
+    <p class="lead">Sistemas alemanes de ozono instalados y verificados en Chile para agua, alimentos, aire, riego y minería. El ozono se genera en el lugar, actúa y vuelve a ser oxígeno: no hay químicos que almacenar.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href={waLink()} target="_blank" rel="noopener">Cuéntanos tu proceso</a>
+      <a class="btn btn-ghost" href="#procesos">Ver aplicaciones</a>
+    </div>
+  </div>
+  <div class="wrap">
+    <dl class="facts">
+      {facts.map((f) => (
+        <div class="fact">
+          <dt class="mono">{f.value}</dt>
+          <dd>{f.label}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .hero{position:relative; overflow:hidden; background:radial-gradient(120% 90% at 85% 10%, #24357A 0%, var(--navy) 55%, #0E1638 100%); color:#fff; padding-block:clamp(72px, 11vw, 140px) 0;}
+  canvas{position:absolute; inset:0; width:100%; height:100%;}
+  .inner{position:relative; display:grid; gap:24px; max-width:var(--wrap);}
+  .eyebrow{color:var(--sky);}
+  h1{font-size:clamp(40px, 7vw, 86px); max-width:15ch; font-weight:750;}
+  h1 em{font-style:normal; color:var(--sky);}
+  .lead{font-size:clamp(17px, 1.6vw, 20px); color:rgba(255,255,255,.8); max-width:58ch;}
+  .actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:6px;}
+  .facts{position:relative; margin:clamp(56px,8vw,96px) 0 0; display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); border-top:1px solid rgba(255,255,255,.14);}
+  .fact{padding:26px 24px 34px 0; display:grid; gap:8px; min-width:0;}
+  .fact + .fact{padding-left:24px; border-left:1px solid rgba(255,255,255,.14);}
+  dt{font-size:clamp(22px, 2.4vw, 30px); color:#fff; font-weight:500;}
+  dd{margin:0; font-size:14px; color:rgba(255,255,255,.68); max-width:30ch;}
+  @media (max-width:860px){
+    .facts{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .fact:nth-child(3){padding-left:0; border-left:none;}
+    .fact:nth-child(n+3){border-top:1px solid rgba(255,255,255,.14);}
+  }
+</style>
+
+<script>
+  // Campo de burbujas: círculos que suben como en agua ozonizada; algunos son tríos (O₃) que giran lento.
+  const canvas = document.getElementById('ozoneField') as HTMLCanvasElement | null;
+  const ctx = canvas?.getContext('2d');
+  if (canvas && ctx) {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let w = 0, h = 0, dpr = 1;
+    type P = { x:number; y:number; r:number; v:number; drift:number; phase:number; trio:boolean; a:number; spin:number };
+    let parts: P[] = [];
+    const make = (initial: boolean): P => {
+      const trio = Math.random() < 0.18;
+      return {
+        x: Math.random() * w,
+        y: initial ? Math.random() * h : h + 40,
+        r: trio ? 10 + Math.random() * 16 : 2 + Math.random() * 9,
+        v: 0.15 + Math.random() * 0.45,
+        drift: 0.3 + Math.random() * 0.8,
+        phase: Math.random() * Math.PI * 2,
+        trio,
+        a: 0.18 + Math.random() * 0.35,
+        spin: Math.random() * Math.PI * 2,
+      };
+    };
+    const resize = () => {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      w = canvas.clientWidth; h = canvas.clientHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.round(Math.min(90, (w * h) / 16000));
+      parts = Array.from({ length: n }, () => make(true));
+    };
+    const ring = (x:number, y:number, r:number, a:number, color:string) => {
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.strokeStyle = color.replace('A', String(a)); ctx.lineWidth = 1.4; ctx.stroke();
+    };
+    const draw = (t:number) => {
+      ctx.clearRect(0, 0, w, h);
+      for (const p of parts) {
+        const x = p.x + Math.sin(t / 2400 + p.phase) * 12 * p.drift;
+        if (p.trio) {
+          const k = p.r * 0.62, s = p.spin + t / 9000;
+          for (let i = 0; i < 3; i++) {
+            const ang = s + (i * Math.PI * 2) / 3;
+            ring(x + Math.cos(ang) * k, p.y + Math.sin(ang) * k, p.r * 0.72, p.a, 'rgba(141,206,238,A)');
+          }
+        } else {
+          ring(x, p.y, p.r, p.a, 'rgba(141,206,238,A)');
+        }
+      }
+    };
+    const step = (t:number) => {
+      for (const p of parts) {
+        p.y -= p.v;
+        if (p.y < -40) Object.assign(p, make(false));
+      }
+      draw(t);
+      if (!document.hidden) requestAnimationFrame(step);
+    };
+    resize();
+    addEventListener('resize', resize);
+    if (reduce) draw(0);
+    else {
+      requestAnimationFrame(step);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) requestAnimationFrame(step); });
+    }
+  }
+</script>

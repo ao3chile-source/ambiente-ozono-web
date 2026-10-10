@@ -1,0 +1,135 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import IndustrySelector from '../components/IndustrySelector.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { sewecLine, process } from '../data/site.js';
+---
+<Base title="Ambiente Ozono · Soluciones de ozono para la industria" dark>
+  <Hero />
+
+  <section class="section" id="procesos">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Aplicaciones</span>
+        <h2>¿Qué proceso quieres mejorar?</h2>
+        <p>Cada industria tiene un problema distinto. Elige la tuya y revisa qué hace el ozono en ese proceso.</p>
+      </div>
+      <div class="reveal"><IndustrySelector /></div>
+    </div>
+  </section>
+
+  <section class="section sewec" id="sewec">
+    <div class="wrap">
+      <div class="sewec-grid">
+        <div class="section-head reveal">
+          <span class="eyebrow">Tecnología · Wehr, Alemania</span>
+          <h2>Ingeniería alemana, instalada con precisión en Chile.</h2>
+          <p>Somos representantes oficiales de Sewec Ozon. Sus equipos se diseñan y fabrican en Alemania; nosotros los dimensionamos para tu proceso y los instalamos con un nivel de detalle que se nota en la operación diaria.</p>
+        </div>
+        <ul class="line reveal">
+          {sewecLine.map((item) => (
+            <li><h3>{item.name}</h3><p>{item.note}</p></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Cómo trabajamos</span>
+        <h2>Del diagnóstico a la verificación periódica.</h2>
+        <p>Acompañamos el sistema durante toda su vida útil, no solo en la venta.</p>
+      </div>
+      <ol class="steps reveal">
+        {process.map((s, i) => (
+          <li>
+            <span class="mono n">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section research">
+    <div class="wrap research-grid reveal">
+      <div class="rings" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="section-head">
+        <span class="eyebrow">Investigación</span>
+        <h2>Centro de investigación de ozono.</h2>
+        <p>Estamos construyendo un espacio para medir, documentar y publicar cómo rinde el ozono en procesos productivos chilenos. Los resultados se compartirán en el blog.</p>
+        <a class="btn btn-dark" href="/blog">Ir al blog</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap faq-grid">
+      <div class="section-head reveal">
+        <span class="eyebrow">Preguntas frecuentes</span>
+        <h2>Lo que suelen preguntarnos.</h2>
+        <p>Si tu duda no está aquí, escríbenos.</p>
+      </div>
+      <div class="reveal"><Faq /></div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .sewec{background:var(--white); border-block:1px solid var(--line);}
+  .sewec-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:clamp(32px,6vw,80px); align-items:start;}
+  .line{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--line);}
+  .line li{padding:22px 20px 24px 0; border-bottom:1px solid var(--line); display:grid; gap:6px; align-content:start; min-width:0;}
+  .line li:nth-child(even){padding-left:20px; border-left:1px solid var(--line);}
+  .line h3{font-size:19px; color:var(--brand);}
+  .line p{font-size:15px; color:var(--muted);}
+
+  .steps{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:0; counter-reset:s;}
+  .steps li{display:grid; gap:10px; align-content:start; padding:24px 22px 8px 0; border-top:2px solid var(--line); position:relative; min-width:0;}
+  .steps li::before{content:""; position:absolute; top:-7px; left:0; width:12px; height:12px; border-radius:50%; background:var(--paper); border:2px solid var(--brand);}
+  .steps li:nth-child(3)::before{background:var(--leaf); border-color:var(--leaf);}
+  .n{font-size:12.5px; color:var(--brand);}
+  .steps h3{font-size:20px;}
+  .steps p{font-size:15px; color:var(--muted);}
+
+  .research{background:var(--navy); color:#fff;}
+  .research .eyebrow{color:var(--sky);}
+  .research .section-head p{color:rgba(255,255,255,.75);}
+  .research .section-head{margin-bottom:0;}
+  .research .btn-dark{background:#fff; color:var(--navy); justify-self:start;}
+  .research-grid{display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:clamp(32px,6vw,80px); align-items:center;}
+  .rings{position:relative; aspect-ratio:1; max-width:340px; width:100%;}
+  .rings span{position:absolute; width:58%; aspect-ratio:1; border-radius:50%; border:14px solid var(--sky); opacity:.9;}
+  .rings span:nth-child(1){left:0; bottom:6%; border-color:#5FB6E3; width:40%;}
+  .rings span:nth-child(2){left:22%; top:12%; width:52%;}
+  .rings span:nth-child(3){right:0; top:0; width:62%; border-color:var(--brand); border-width:16px; box-shadow:0 0 0 1px rgba(255,255,255,.08);}
+  @media (prefers-reduced-motion: no-preference){
+    .rings span{animation:float 9s ease-in-out infinite;}
+    .rings span:nth-child(2){animation-delay:-3s;}
+    .rings span:nth-child(3){animation-delay:-6s;}
+  }
+  @keyframes float{50%{transform:translateY(-10px);}}
+
+  .faq-grid{display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:clamp(32px,6vw,80px); align-items:start;}
+
+  @media (max-width:980px){
+    .steps{grid-template-columns:1fr; }
+    .steps li{border-top:none; border-left:2px solid var(--line); padding:0 0 26px 26px;}
+    .steps li::before{top:4px; left:-7px;}
+  }
+  @media (max-width:860px){
+    .sewec-grid, .research-grid, .faq-grid{grid-template-columns:1fr;}
+    .rings{max-width:200px;}
+  }
+  @media (max-width:560px){
+    .line{grid-template-columns:1fr;}
+    .line li:nth-child(even){padding-left:0; border-left:none;}
+  }
+</style>

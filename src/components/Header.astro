@@ -1,0 +1,43 @@
+---
+import { nav, waLink } from '../data/site.js';
+const { dark = false } = Astro.props;
+---
+<header class:list={['site-header', { dark }]}>
+  <div class="wrap bar">
+    <a href="/" class="logo" aria-label="Ambiente Ozono, inicio">
+      <span class="logo-chip"><img src="/logo-ao3.png" alt="Ambiente Ozono" width="148" height="38" /></span>
+    </a>
+    <nav class="menu" aria-label="Principal">
+      {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+    </nav>
+    <a class="btn btn-primary cta" href={waLink()} target="_blank" rel="noopener">Hablemos por WhatsApp</a>
+    <details class="mobile">
+      <summary aria-label="Abrir menú"><span></span><span></span></summary>
+      <div class="sheet">
+        {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+        <a class="btn btn-primary" href={waLink()} target="_blank" rel="noopener">Hablemos por WhatsApp</a>
+      </div>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header{position:sticky; top:0; z-index:50; background:rgba(246,249,251,.86); backdrop-filter:blur(12px); border-bottom:1px solid var(--line);}
+  .site-header.dark{background:rgba(22,33,79,.82); border-bottom-color:rgba(255,255,255,.08); color:#fff;}
+  .bar{display:flex; align-items:center; gap:28px; height:72px;}
+  .logo{flex:none; display:flex;}
+  .logo-chip{background:#fff; border-radius:10px; padding:6px 10px; display:flex;}
+  .logo img{height:30px; width:auto;}
+  .menu{display:flex; gap:26px; margin-left:auto; font-size:15px; font-weight:500;}
+  .menu a{text-decoration:none; opacity:.85;}
+  .menu a:hover{opacity:1; text-decoration:underline; text-underline-offset:6px; text-decoration-color:var(--sky);}
+  .cta{padding:11px 18px; font-size:14px;}
+  .mobile{display:none; margin-left:auto; position:relative;}
+  .mobile summary{list-style:none; cursor:pointer; width:42px; height:42px; display:grid; place-content:center; gap:6px; border-radius:10px; border:1px solid currentColor; opacity:.8;}
+  .mobile summary::-webkit-details-marker{display:none;}
+  .mobile summary span{display:block; width:18px; height:2px; background:currentColor;}
+  .sheet{position:absolute; right:0; top:52px; background:var(--white); color:var(--ink); border:1px solid var(--line); border-radius:14px; padding:14px; display:flex; flex-direction:column; gap:4px; min-width:220px; box-shadow:0 20px 40px -20px rgba(15,23,48,.35);}
+  .sheet a:not(.btn){padding:10px 8px; text-decoration:none; font-weight:500;}
+  .sheet .btn{margin-top:8px; justify-content:center;}
+  @media (max-width: 920px){ .menu, .cta{display:none;} .mobile{display:block;} }
+</style>

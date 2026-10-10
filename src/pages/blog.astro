@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { posts } from '../data/site.js';
+---
+<Base title="Blog · Ambiente Ozono" dark>
+  <PageHead eyebrow="Blog e investigación" title="Ozono aplicado, caso a caso." lead="Artículos técnicos y, pronto, resultados del centro de investigación de ozono." />
+  <section class="section">
+    <div class="wrap">
+      <ul class="posts">
+        {posts.map((p) => (
+          <li class="reveal">
+            <a href={p.url} target="_blank" rel="noopener">
+              <span class="meta mono">{p.tag} · {p.date}</span>
+              <h2>{p.title}</h2>
+              <span class="read">Leer artículo →</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+  <CtaBand />
+</Base>
+
+<style>
+  .posts{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px;}
+  .posts a{display:grid; gap:14px; align-content:start; height:100%; padding:28px; background:var(--white); border:1px solid var(--line); border-radius:var(--radius); text-decoration:none; transition:border-color .2s, transform .2s;}
+  .posts a:hover{border-color:var(--brand); transform:translateY(-2px);}
+  .meta{font-size:12px; color:var(--brand); letter-spacing:.06em; text-transform:uppercase;}
+  h2{font-size:22px;}
+  .read{font-weight:600; color:var(--brand); font-size:15px;}
+  @media (max-width:860px){ .posts{grid-template-columns:1fr;} }
+</style>

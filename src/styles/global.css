@@ -1,0 +1,51 @@
+/* Concepto: ingeniería alemana con precisión clínica. Fondo frío y limpio, azul del logo AO3,
+   datos técnicos en tipografía mono y un único elemento vivo (las moléculas del hero). */
+:root{
+  --navy:#16214F;
+  --brand:#2F418D;
+  --sky:#8DCEEE;
+  --sky-soft:#E6F4FB;
+  --leaf:#2F9E52;
+  --paper:#F6F9FB;
+  --white:#FFFFFF;
+  --ink:#0F1730;
+  --muted:#56617D;
+  --line:#DCE4EE;
+
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body:"Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  --wrap:1180px;
+  --gutter:clamp(16px, 4vw, 40px);
+  --radius:14px;
+  color-scheme:light;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;}
+img{max-width:100%; display:block;}
+a{color:inherit;}
+h1,h2,h3,h4{font-family:var(--font-display); font-weight:700; line-height:1.08; letter-spacing:-0.01em; margin:0; text-wrap:balance; font-stretch:112%;}
+p{margin:0;}
+.wrap{max-width:var(--wrap); margin:0 auto; padding-inline:var(--gutter);}
+.mono{font-family:var(--font-mono); font-variant-numeric:tabular-nums;}
+.eyebrow{font-family:var(--font-mono); font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--brand);}
+.section{padding-block:clamp(64px, 9vw, 120px);}
+.section-head{display:grid; gap:14px; max-width:720px; margin-bottom:clamp(32px,5vw,56px);}
+.section-head h2{font-size:clamp(30px, 4.2vw, 50px);}
+.section-head p{color:var(--muted); font-size:18px; max-width:62ch;}
+
+.btn{display:inline-flex; align-items:center; gap:10px; padding:14px 22px; border-radius:999px; font-weight:600; font-size:15px; text-decoration:none; border:1px solid transparent; transition:background .2s, color .2s, border-color .2s, transform .2s;}
+.btn:hover{transform:translateY(-1px);}
+.btn:focus-visible{outline:3px solid var(--sky); outline-offset:3px;}
+.btn-primary{background:var(--leaf); color:#fff;}
+.btn-primary:hover{background:#278A47;}
+.btn-ghost{border-color:rgba(255,255,255,.35); color:#fff;}
+.btn-ghost:hover{border-color:#fff;}
+.btn-dark{background:var(--brand); color:#fff;}
+.btn-dark:hover{background:var(--navy);}
+
+.reveal{transition:opacity .7s ease, transform .7s ease;}
+.js .reveal.pending{opacity:.001; transform:translateY(14px);}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} .reveal{transition:none;} .js .reveal.pending{opacity:1; transform:none;} .btn{transition:none;} }

@@ -1,0 +1,73 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { industries, waLink } from '../data/site.js';
+const services = [
+  { title: 'Venta de equipos', text: 'Generadores y sistemas completos Sewec Ozon, dimensionados para tu caudal o volumen.' },
+  { title: 'Arriendo con opción de compra', text: 'Tres meses para validar resultados en tu operación antes de decidir la compra.' },
+  { title: 'Consultoría y diseño a medida', text: 'Estudio previo del proceso y diseño del sistema: generación, inyección, control y seguridad.' },
+  { title: 'Verificación técnica', text: 'Chequeos periódicos para mantener el rendimiento y la seguridad del sistema.' },
+];
+---
+<Base title="Soluciones · Ambiente Ozono" dark>
+  <PageHead eyebrow="Soluciones y servicios" title="Ozono aplicado a cada industria." lead="Venta, arriendo, diseño y verificación de sistemas de ozono para agua, alimentos, aire, riego, minería y aguas residuales." />
+
+  <section class="section services">
+    <div class="wrap">
+      <ul class="svc reveal">
+        {services.map((s) => <li><h2>{s.title}</h2><p>{s.text}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="industries">
+    <div class="wrap">
+      <nav class="jump" aria-label="Industrias">
+        {industries.map((i) => <a href={`#${i.id}`}>{i.short}</a>)}
+      </nav>
+      {industries.map((ind, idx) => (
+        <article class="ind reveal" id={ind.id}>
+          <div class="ind-head">
+            <span class="mono">{String(idx + 1).padStart(2, '0')}</span>
+            <h2>{ind.name}</h2>
+          </div>
+          <div class="ind-body">
+            <div><span class="eyebrow">El problema</span><p>{ind.problem}</p></div>
+            <div><span class="eyebrow">Qué hace el ozono</span><p>{ind.action}</p></div>
+            <div>
+              <span class="eyebrow">Resultados</span>
+              <ul>{ind.benefits.map((b) => <li>{b}</li>)}</ul>
+            </div>
+          </div>
+          <a class="ask" href={waLink(`Hola, quiero evaluar ozono para ${ind.name.toLowerCase()}.`)} target="_blank" rel="noopener">Consultar por {ind.short.toLowerCase()} →</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .svc{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px;}
+  .svc li{background:var(--white); border:1px solid var(--line); border-radius:var(--radius); padding:24px; display:grid; gap:10px; align-content:start; min-width:0;}
+  .svc h2{font-size:20px; color:var(--brand);}
+  .svc p{font-size:15px; color:var(--muted);}
+  .industries{padding-bottom:clamp(64px,9vw,120px);}
+  .jump{position:sticky; top:72px; z-index:5; display:flex; gap:6px; overflow-x:auto; padding:12px 0; background:var(--paper); border-bottom:1px solid var(--line); scrollbar-width:none;}
+  .jump a{flex:none; text-decoration:none; font-size:14px; font-weight:600; padding:8px 14px; border-radius:999px; border:1px solid var(--line); background:var(--white);}
+  .jump a:hover{border-color:var(--brand); color:var(--brand);}
+  .ind{padding-block:48px; border-bottom:1px solid var(--line); display:grid; gap:24px; scroll-margin-top:140px;}
+  .ind-head{display:flex; align-items:baseline; gap:16px;}
+  .ind-head .mono{color:var(--brand); font-size:13px;}
+  .ind-head h2{font-size:clamp(26px,3.2vw,38px);}
+  .ind-body{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px;}
+  .ind-body > div{display:grid; gap:8px; align-content:start;}
+  .ind-body p{color:var(--muted);}
+  .ind-body ul{margin:0; padding-left:18px; display:grid; gap:6px; font-weight:500;}
+  .ask{font-weight:600; color:var(--brand); text-decoration:none; justify-self:start;}
+  .ask:hover{text-decoration:underline; text-underline-offset:5px;}
+  @media (max-width:980px){ .svc{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  @media (max-width:760px){ .svc, .ind-body{grid-template-columns:1fr;} }
+</style>

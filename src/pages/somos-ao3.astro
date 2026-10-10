@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+const blocks = [
+  { title: 'Misión', text: 'Replicar el mecanismo con que la naturaleza produce ozono para usarlo como desinfectante en la industria chilena y sudamericana, con menor impacto ambiental: agua, aire, alimentos, limpieza y minerales.' },
+  { title: 'Visión', text: 'Ser un referente nacional e internacional en soluciones de ozono, con productos innovadores de calidad alemana que mejoren la gestión del aire, el agua y los alimentos en procesos industriales y agrícolas.' },
+  { title: 'Motivación', text: 'Dejar un mejor planeta a las próximas generaciones, demostrando que el desarrollo productivo y los procesos limpios pueden avanzar juntos.' },
+];
+---
+<Base title="Somos AO3 · Ambiente Ozono" dark>
+  <PageHead eyebrow="Somos AO3" title="Soluciones sustentables para la industria chilena." lead="Ambiente Ozono es especialista en desinfección y tratamientos integrales con ozono, y representante oficial en Chile de Sewec Ozon, Alemania." />
+  <section class="section">
+    <div class="wrap mvv">
+      {blocks.map((b) => <div class="reveal"><span class="eyebrow">{b.title}</span><p>{b.text}</p></div>)}
+    </div>
+  </section>
+  <section class="section diff">
+    <div class="wrap diff-grid">
+      <div class="section-head reveal">
+        <span class="eyebrow">Lo que nos distingue</span>
+        <h2>Precisión en cada instalación.</h2>
+      </div>
+      <div class="reveal points">
+        <p><b>Tecnología alemana certificada.</b> Trabajamos con equipos Sewec Ozon, diseñados y fabricados en Alemania.</p>
+        <p><b>Instalaciones meticulosas.</b> Cada montaje se ejecuta con un estándar de detalle que se nota en la operación y en la seguridad del sistema.</p>
+        <p><b>Acompañamiento continuo.</b> Desde el estudio previo hasta los chequeos técnicos periódicos.</p>
+      </div>
+    </div>
+  </section>
+  <CtaBand />
+</Base>
+
+<style>
+  .mvv{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(24px,4vw,48px);}
+  .mvv > div{display:grid; gap:12px; align-content:start; padding-top:20px; border-top:2px solid var(--brand);}
+  .mvv p{font-size:17.5px;}
+  .diff{background:var(--white); border-top:1px solid var(--line);}
+  .diff-grid{display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:clamp(32px,6vw,80px);}
+  .points{display:grid; gap:22px;}
+  .points p{color:var(--muted); font-size:17px;}
+  .points b{color:var(--ink);}
+  @media (max-width:860px){ .mvv, .diff-grid{grid-template-columns:1fr;} }
+</style>
