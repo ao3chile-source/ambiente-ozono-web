@@ -1,4 +1,7 @@
 // Datos de contacto y contenido base. Textos en borrador: se validan con Martin y se respaldan con fuentes.
+
+// Mientras el sitio sea borrador, los buscadores no lo indexan. Cambiar a false en el lanzamiento.
+export const isDraft = true;
 export const contact = {
   whatsapp: '56942542118',
   whatsappLabel: '+56 9 4254 2118',

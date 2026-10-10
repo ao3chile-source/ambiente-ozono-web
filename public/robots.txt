@@ -1,0 +1,3 @@
+# Sitio en borrador: no indexar. Reemplazar en el lanzamiento por "Allow: /" y el sitemap.
+User-agent: *
+Disallow: /
